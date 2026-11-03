@@ -46,7 +46,7 @@ def Bound (a b a' b' c' : ℚ) : Prop :=
   ∃ P : Program, P.Exact ∧ ∃ C : ℝ, 0 < C ∧ ∃ N : ℕ, 16 ≤ N ∧
     (∀ (G : Graph) (s : Fin G.n), N ≤ G.n → Sparse a b G.n G.m →
       CorrectWithin P G s (C * Time a' b' c' G.n)) ∧
-    (∀ (G : Graph) (s : Fin G.n),
+    (∀ (G : Graph) (s : Fin G.n), ¬ Sparse a b G.n G.m →
       CorrectWithin P G s (C * ((G.n : ℝ) + 1) * ((G.m : ℝ) + 1)))
 
 end BigOSpeedrun.DirectedSSSP

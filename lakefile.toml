@@ -18,4 +18,4 @@ subDir = "formal/lean"
 [[lean_lib]]
 name = "Submission"
 # The default build stops before the C-HD proof; the chd input of the workflow builds the rest.
-roots = ["Submission.SsspStatement", "Submission.Validation"]
+roots = ["Submission"]
