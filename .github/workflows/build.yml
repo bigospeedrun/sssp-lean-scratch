@@ -91,7 +91,9 @@ jobs:
         id: chd
         if: inputs.chd && steps.build.outcome == 'success'
         continue-on-error: true
-        run: lake build Submission
+        run: |
+          lake build Submission
+          if [ "${{ inputs.pins }}" = verifier ]; then lake build VerifierAudit; fi
 
       - name: Print the C-HD axioms
         id: chdaxioms

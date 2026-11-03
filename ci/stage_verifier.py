@@ -19,7 +19,7 @@ import verifier  # noqa: E402
 
 profile = json.loads((VER / 'profiles/direct.json').read_text())['directed-sssp']
 deps = profile['solution_dependencies']
-roots = profile['source_roots'] + [r for d in deps for r in d['source_roots']] + ['VerifierChallenge']
+roots = profile['source_roots'] + [r for d in deps for r in d['source_roots']] + ['VerifierChallenge', 'VerifierAudit']
 for d in deps:
     target = HERE / '.fork'
     subprocess.check_call(['git', 'clone', '--quiet', '--filter=blob:none', d['repo_url'], str(target)])
@@ -38,4 +38,7 @@ shutil.copyfile(VER / profile['manifest_file'], HERE / 'lake-manifest.json')
 sub = {'schema_version': 1, 'problem': 'directed-sssp', 'bound': 'n log^3/4 ; n log^11/12',
        'repo_url': 'https://github.com/bigospeedrun/sssp-lean-scratch', 'commit': '0' * 40, 'authors': []}
 (HERE / 'VerifierChallenge.lean').write_text(submissions.challenge_source(sub))
+# As verifier.prepare writes it: the solution module, then #print axioms of each theorem name.
+(HERE / 'VerifierAudit.lean').write_text('import ' + profile['solution_module'] + '\n' +
+                                      ''.join('#print axioms ' + n + '\n' for n in profile['theorem_names']))
 print((HERE / 'lakefile.toml').read_text())
