@@ -4,10 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       pins:
-        description: "fork = Lean v4.34.0 + Mathlib 5ed2965; bos = Lean v4.34.1 + Mathlib d13f23b"
+        description: "fork = Lean v4.34.0 + Mathlib 5ed2965; bos = Lean v4.34.1 + Mathlib d13f23b; verifier = the verifier's own lakefile, manifest and options (ci/stage_verifier.py)"
         type: choice
-        options: [fork, bos]
+        options: [fork, bos, verifier]
         default: fork
+      verifier_ref:
+        description: "bigospeedrun/verifier commit for pins=verifier"
+        type: string
+        default: main
       chd:
         description: "Also build the C-HD proof, the bridge and Race.bound (lake build Submission), and print the axioms"
         type: boolean
@@ -44,7 +48,22 @@ jobs:
           sed -i 's/5ed2965256430c3649e86755f9576b54eca72435/d13f23b723b8a846827a245b89c10fc7d3f11612/' lakefile.toml
           grep -q "d13f23b723b8a846827a245b89c10fc7d3f11612" lakefile.toml
 
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        if: inputs.pins == 'verifier'
+        with:
+          repository: bigospeedrun/verifier
+          ref: ${{ inputs.verifier_ref }}
+          path: .verifier
+          persist-credentials: false
+
+      - name: Stage as the verifier does
+        if: inputs.pins == 'verifier'
+        run: |
+          python3 -I ci/stage_verifier.py .verifier
+          git -C .verifier log -1 --format='verifier %H'
+
       - name: Resolve dependencies
+        if: inputs.pins != 'verifier'
         run: |
           cat lean-toolchain
           lake update
@@ -58,7 +77,9 @@ jobs:
       - name: Build
         id: build
         continue-on-error: true
-        run: lake build Submission.SsspStatement Submission.Validation
+        run: |
+          lake build Submission.SsspStatement Submission.Validation
+          if [ "${{ inputs.pins }}" = verifier ]; then lake build VerifierChallenge; fi
 
       - name: Print axioms
         id: axioms
