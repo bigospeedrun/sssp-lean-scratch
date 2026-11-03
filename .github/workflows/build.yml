@@ -53,16 +53,39 @@ jobs:
       - name: Get the Mathlib cache
         run: lake exe cache get
 
+      # Lean errors do not fail the run (each failed run mails the dispatcher).
+      # The Summary step reports each result; read it with gh run view --log.
       - name: Build
+        id: build
+        continue-on-error: true
         run: lake build
 
       - name: Print axioms
+        id: axioms
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
         run: lake env lean Axioms.lean
 
       - name: Build the C-HD proof
-        if: inputs.chd
+        id: chd
+        if: inputs.chd && steps.build.outcome == 'success'
+        continue-on-error: true
         run: lake build BosSssp.Bridge
 
       - name: Print the C-HD axioms
-        if: inputs.chd
+        id: chdaxioms
+        if: inputs.chd && steps.chd.outcome == 'success'
+        continue-on-error: true
         run: lake env lean AxiomsCHD.lean
+
+      - name: Summary
+        if: always()
+        env:
+          BUILD: ${{ steps.build.outcome }}
+          AXIOMS: ${{ steps.axioms.outcome }}
+          CHD: ${{ steps.chd.outcome }}
+          CHDAXIOMS: ${{ steps.chdaxioms.outcome }}
+        run: |
+          line="RESULT pins=${{ inputs.pins }} build=${BUILD:-none} axioms=${AXIOMS:-none} chd=${CHD:-none} chd_axioms=${CHDAXIOMS:-none}"
+          echo "$line"
+          echo "$line" >> "$GITHUB_STEP_SUMMARY"
