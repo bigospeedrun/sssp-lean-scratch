@@ -25,7 +25,7 @@ open Frontier Frontier.RAM
 /-- The edge cap `D(n) = n^a · ⌊⌊log₂ n⌋^b⌋`, with both floors exact
 (`Nat.log 2 n` is `⌊log₂ n⌋`). At `a = 1`, `b = 3/4` this is the C-HD threshold. -/
 noncomputable def Cap (a b : ℚ) (n : ℕ) : ℝ :=
-  (n : ℝ) ^ (a : ℝ) * (⌊((Nat.log 2 n : ℕ) : ℝ) ^ (b : ℝ)⌋₊ : ℝ)
+  (n : ℝ) ^ (a : ℝ) * ((Nat.log 2 n : ℕ) : ℝ) ^ (b : ℝ)
 
 /-- A graph with `n` vertices and `m` edges is in the race's density range. -/
 def Sparse (a b : ℚ) (n m : ℕ) : Prop := (m : ℝ) ≤ Cap a b n
