@@ -1,6 +1,7 @@
 import BosSssp.Statement
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Base
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-!
 Checks of the race statement (not trusted; the verifier does not use this file).
@@ -214,9 +215,8 @@ lemma cap_eventually_le {a b a₀ b₀ : ℚ} (hb₀ : 0 ≤ b₀) (hb : 0 ≤ b
   · have hd : (0 : ℝ) < (a : ℝ) - a₀ := sub_pos.2 (by exact_mod_cast ha)
     have hc : (0 : ℝ) < (2 : ℝ) ^ (b₀ : ℝ) := Real.rpow_pos_of_pos (by norm_num) _
     filter_upwards [eventually_ge_atTop 2, ev_nat_log_rpow_le (b₀ : ℝ) hd hc] with n hn hp
-    have hx : (0 : ℝ) < n := by
-      have : (2 : ℝ) ≤ n := by exact_mod_cast hn
-      linarith
+    have hn2 : (2 : ℝ) ≤ n := by exact_mod_cast hn
+    have hx : (0 : ℝ) < n := by linarith
     have hK1 := one_le_natLog hn
     have hKle := natLog_le_two_log (n := n) (by omega)
     have hb₀' : (0 : ℝ) ≤ b₀ := by exact_mod_cast hb₀
