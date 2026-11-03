@@ -124,7 +124,7 @@ lemma tchd_le {n m : ℕ} (hn : 16 ≤ n) (hm : (m : ℝ) ≤ 2 * n * Real.log n
   have hlog2 : Real.log ((n : ℝ) + 2) ≤ 2 * ℓ := by
     have : (n : ℝ) + 2 ≤ (n : ℝ) ^ 2 := by nlinarith
     calc Real.log ((n : ℝ) + 2) ≤ Real.log ((n : ℝ) ^ 2) := Real.log_le_log (by positivity) this
-      _ = 2 * ℓ := by rw [Real.log_pow]; norm_num
+      _ = 2 * ℓ := by rw [Real.log_pow, ← hℓ]; norm_num
   have t4 : (m : ℝ) ^ ((1 : ℝ) / 3) * ((n : ℝ) * Real.log ((n : ℝ) + 2)) ^ ((2 : ℝ) / 3) ≤
       2 * (n * ℓ ^ ((11 : ℝ) / 12)) := by
     have hA : (0 : ℝ) < 2 * n := by positivity
@@ -246,7 +246,7 @@ lemma tdisp_le_poly {n m : ℕ} (hn : 1 ≤ n) :
     have hm13 : (m : ℝ) ^ ((1 : ℝ) / 3) ≤ m := by
       rcases Nat.eq_zero_or_pos m with h0 | h0
       · subst h0
-        simp [Real.zero_rpow (by norm_num : (1 : ℝ) / 3 ≠ 0)]
+        simp
       · have : (1 : ℝ) ≤ m := by exact_mod_cast h0
         simpa using Real.rpow_le_rpow_of_exponent_le this (show (1 : ℝ) / 3 ≤ 1 by norm_num)
     calc (m : ℝ) ^ ((1 : ℝ) / 3) * ((n : ℝ) * Real.log ((n : ℝ) + 2)) ^ ((2 : ℝ) / 3)
@@ -268,7 +268,7 @@ theorem bound_of_tdisp {P : Program} (hE : P.Exact) {K : ℝ}
   · intro G s hn hsp
     have hd : GateCTarget.Tdisp GateCCalc.F G.n G.m = GateCCalc.Tchd G.n G.m := by
       unfold GateCTarget.Tdisp
-      rw [if_pos (sparse_le_F hsp)]
+      exact ite_cond_eq_true _ _ (eq_true (sparse_le_F hsp))
     have h := correctWithin_mono_const (correctWithin_of_exact hE (hR G s)) (tdisp_nonneg _ _)
     refine CorrectWithin.mono h ?_
     rw [hd]
