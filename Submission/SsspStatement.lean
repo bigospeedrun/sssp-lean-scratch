@@ -43,7 +43,7 @@ least `N` vertices and at most `D(n)` edges it runs within `C · T(n)`; on every
 graph it runs within `C · (n+1) · (m+1)` (a polynomial fallback, as Bellman-Ford).
 `P.Exact` follows from the fallback clause; it stays for readability. -/
 def Bound (a b a' b' c' : ℚ) : Prop :=
-  ∃ P : Program, P.Exact ∧ ∃ C : ℝ, 0 < C ∧ ∃ N : ℕ, 16 ≤ N ∧
+  ∃ P : Program, ∃ C : ℝ, 0 < C ∧ ∃ N : ℕ, 16 ≤ N ∧
     (∀ (G : Graph) (s : Fin G.n), N ≤ G.n → Sparse a b G.n G.m →
       CorrectWithin P G s (C * Time a' b' c' G.n)) ∧
     (∀ (G : Graph) (s : Fin G.n),
