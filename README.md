@@ -13,3 +13,6 @@ repository only, and uses no secrets. It runs `lake exe cache get`, `lake build`
 and `#print axioms` (`Axioms.lean`; with the `chd` input, also the C-HD proof and `AxiomsCHD.lean`).
 
 We archive this repository when the race opens.
+
+In `Bound`, `P.Exact` follows from the fallback clause (a correct run within
+`C · (n+1) · (m+1)` on every graph). It stays in the statement for readability.
