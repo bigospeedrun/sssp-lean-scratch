@@ -1,4 +1,5 @@
 import Frontier.CostModel
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 Trusted target for the Big O Speedrun directed shortest paths race,
@@ -38,13 +39,12 @@ def CorrectWithin (P : Program) (G : Graph) (s : Fin G.n) (budget : ℝ) : Prop 
 
 /-- One uniform program, exact on every graph and source. On every graph with at
 least `N` vertices and at most `D(n)` edges it runs within `C · T(n)`; on every
-other graph above the cap it runs within `C · (n+1) · (m+1)` (a Bellman-Ford
-fallback). -/
+graph it runs within `C · (n+1) · (m+1)` (a polynomial fallback, as Bellman-Ford). -/
 def Bound (a b a' b' c' : ℚ) : Prop :=
   ∃ P : Program, P.Exact ∧ ∃ C : ℝ, 0 < C ∧ ∃ N : ℕ, 16 ≤ N ∧
     (∀ (G : Graph) (s : Fin G.n), N ≤ G.n → Sparse a b G.n G.m →
       CorrectWithin P G s (C * Time a' b' c' G.n)) ∧
-    (∀ (G : Graph) (s : Fin G.n), ¬ Sparse a b G.n G.m →
+    (∀ (G : Graph) (s : Fin G.n),
       CorrectWithin P G s (C * ((G.n : ℝ) + 1) * ((G.m : ℝ) + 1)))
 
 end BigOSpeedrun.DirectedSSSP

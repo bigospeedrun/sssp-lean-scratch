@@ -10,6 +10,6 @@ no copy of its files.
 
 The one workflow (`build`) runs only by hand (workflow_dispatch), reads the
 repository only, and uses no secrets. It runs `lake exe cache get`, `lake build`
-and `#print axioms` (`Axioms.lean`).
+and `#print axioms` (`Axioms.lean`; with the `chd` input, also the C-HD proof and `AxiomsCHD.lean`).
 
 We archive this repository when the race opens.

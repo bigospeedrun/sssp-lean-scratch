@@ -8,6 +8,10 @@ on:
         type: choice
         options: [fork, bos]
         default: fork
+      chd:
+        description: "Also build the C-HD proof (Frontier.CHD.Final) and print its axioms"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -54,3 +58,11 @@ jobs:
 
       - name: Print axioms
         run: lake env lean Axioms.lean
+
+      - name: Build the C-HD proof
+        if: inputs.chd
+        run: lake build Frontier.CHD.Final
+
+      - name: Print the C-HD axioms
+        if: inputs.chd
+        run: lake env lean AxiomsCHD.lean

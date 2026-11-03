@@ -1,5 +1,7 @@
 import BosSssp
-import Frontier.CHD.Final
 
 #print axioms BigOSpeedrun.DirectedSSSP.Bound
-#print axioms Frontier.CHD.Final.chd_exact_within
+#print axioms BigOSpeedrun.DirectedSSSP.Validation.weaker_time
+#print axioms BigOSpeedrun.DirectedSSSP.Validation.cover_sparser
+#print axioms BigOSpeedrun.DirectedSSSP.Validation.cap_ge_self
+#print axioms BigOSpeedrun.DirectedSSSP.Validation.time_pos
