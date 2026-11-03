@@ -9,7 +9,7 @@ on:
         options: [fork, bos]
         default: fork
       chd:
-        description: "Also build the C-HD proof, the bridge and Submission.lean, and print the axioms"
+        description: "Also build the C-HD proof, the bridge and Race.bound (lake build Submission), and print the axioms"
         type: boolean
         default: false
 
@@ -58,7 +58,7 @@ jobs:
       - name: Build
         id: build
         continue-on-error: true
-        run: lake build
+        run: lake build Submission.SsspStatement Submission.Validation
 
       - name: Print axioms
         id: axioms
@@ -70,9 +70,7 @@ jobs:
         id: chd
         if: inputs.chd && steps.build.outcome == 'success'
         continue-on-error: true
-        run: |
-          lake build Submission.Bridge
-          lake env lean Submission.lean
+        run: lake build Submission
 
       - name: Print the C-HD axioms
         id: chdaxioms
