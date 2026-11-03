@@ -9,7 +9,7 @@ on:
         options: [fork, bos]
         default: fork
       chd:
-        description: "Also build the C-HD proof (Frontier.CHD.Final) and print its axioms"
+        description: "Also build the C-HD proof and the bridge (BosSssp.Bridge) and print their axioms"
         type: boolean
         default: false
 
@@ -61,7 +61,7 @@ jobs:
 
       - name: Build the C-HD proof
         if: inputs.chd
-        run: lake build Frontier.CHD.Final
+        run: lake build BosSssp.Bridge
 
       - name: Print the C-HD axioms
         if: inputs.chd
