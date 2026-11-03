@@ -1,4 +1,4 @@
-import BosSssp.Statement
+import Submission.SsspStatement
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Base
 import Mathlib.Analysis.Complex.ExponentialBounds

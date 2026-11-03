@@ -1,4 +1,4 @@
-import BosSssp.Validation
+import Submission.Validation
 import Frontier.CHD.Final
 
 /-!

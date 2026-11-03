@@ -1,4 +1,4 @@
-import BosSssp
+import Submission.Validation
 
 #print axioms BigOSpeedrun.DirectedSSSP.Bound
 #print axioms BigOSpeedrun.DirectedSSSP.Validation.weaker_time

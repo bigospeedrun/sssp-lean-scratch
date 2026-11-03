@@ -1,6 +1,6 @@
 name = "bossssp"
 version = "0.1.0"
-defaultTargets = ["BosSssp"]
+defaultTargets = ["Submission"]
 
 # Pins of the fork (formal/lean at 98c53acc): Lean v4.34.0, Mathlib 5ed2965.
 # The "bos" input of the build workflow changes both to the verifier pins.
@@ -16,4 +16,6 @@ rev = "98c53accb47a505482a1781597ae14bf67e81cec"
 subDir = "formal/lean"
 
 [[lean_lib]]
-name = "BosSssp"
+name = "Submission"
+# The default build stops before the C-HD proof; the chd input of the workflow builds the rest.
+roots = ["Submission.SsspStatement", "Submission.Validation"]
